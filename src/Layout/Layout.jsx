@@ -1,4 +1,5 @@
 import React from "react";
+import { Outlet } from "react-router";
 
 export default function Layout() {
   return (
@@ -9,6 +10,7 @@ export default function Layout() {
           <li>Create</li>
         </ul>
       </nav>
+      <Outlet />
     </div>
   );
 }
