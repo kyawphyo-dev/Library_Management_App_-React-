@@ -1,7 +1,12 @@
+import Hero from "../components/Hero";
+import BookList from "../components/BookList";
 function Home() {
   return (
     <>
-      <h1 className="text-3xl italic underline text-blue-950">Hello LMS</h1>
+      {/* Hero Section */}
+      <Hero />
+      {/* Book List */}
+      <BookList />
     </>
   );
 }

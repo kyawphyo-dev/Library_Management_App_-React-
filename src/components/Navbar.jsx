@@ -1,10 +1,12 @@
 import React from "react";
+import { Link } from "react-router";
 
 export default function Navbar() {
   return (
     <div>
       <nav className="bg-gray-200 shadow-md border-b border-gray-300">
         <ul className="flex justify-between p-4  max-w-6xl mx-auto items-center">
+          {/* Search Box */}
           <li className="flex items-center gap-2 p-2 rounded">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -41,8 +43,11 @@ export default function Navbar() {
               placeholder="Search"
             />
           </li>
-
-          <li className="flex items-center gap-2 border border-indigo-600 p-2 rounded md:-ml-50">
+          {/* LogoSection */}
+          <Link
+            to="/"
+            className="flex items-center gap-2 border border-indigo-600 p-2 rounded md:-ml-50"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -61,10 +66,12 @@ export default function Navbar() {
             <span className="font-bold text-lg text-primary hidden md:block">
               LMS
             </span>
-          </li>
+          </Link>
+
+          {/* Profile and Add */}
           <li className=" flex md:gap-3 items-center">
-            <button
-              type="button"
+            <Link
+              to="/create"
               className="md:border border-primary text-primary px-3 py-2 rounded hover:bg-primary hover:text-white transition duration-300 flex"
             >
               <svg
@@ -83,7 +90,7 @@ export default function Navbar() {
               </svg>
 
               <span className="hidden md:block">Add Book</span>
-            </button>
+            </Link>
             <div className="w-10 h-10">
               <img
                 src="https://lh3.googleusercontent.com/a/ACg8ocKhLm_BGPuQWHk9yTA_LlJ71ULC2sYNqKJGKrjg0BrywXUmlVE=s96-c"
