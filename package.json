@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "json": "json-server --watch src/data/db.json --port 4000",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
