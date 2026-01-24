@@ -1,94 +1,187 @@
 {
   "books": [
     {
-      "id": 1,
+      "id": "1",
       "title": "Clean Code",
       "author": "Robert C. Martin",
       "description": "A handbook of agile software craftsmanship that teaches how to write clean, readable, and maintainable code.",
-      "genre": ["Programming", "Software Engineering"],
+      "genre": [
+        "Programming",
+        "Software Engineering"
+      ],
       "publishedYear": 2008,
       "available": true
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "You Don't Know JS",
       "author": "Kyle Simpson",
       "description": "A deep dive into JavaScript core concepts such as scope, closures, and async behavior.",
-      "genre": ["Programming", "JavaScript"],
+      "genre": [
+        "Programming",
+        "JavaScript"
+      ],
       "publishedYear": 2015,
       "available": true
     },
     {
-      "id": 3,
+      "id": "3",
       "title": "Atomic Habits",
       "author": "James Clear",
       "description": "A practical guide on building good habits and breaking bad ones through small changes.",
-      "genre": ["Self-Development", "Psychology"],
+      "genre": [
+        "Self-Development",
+        "Psychology"
+      ],
       "publishedYear": 2018,
       "available": false
     },
     {
-      "id": 4,
+      "id": "4",
       "title": "The Pragmatic Programmer",
       "author": "Andrew Hunt",
       "description": "Timeless advice for programmers on problem-solving, career growth, and software development best practices.",
-      "genre": ["Programming", "Career"],
+      "genre": [
+        "Programming",
+        "Career"
+      ],
       "publishedYear": 1999,
       "available": true
     },
     {
-      "id": 5,
+      "id": "5",
       "title": "Design Patterns",
       "author": "Erich Gamma",
       "description": "An introduction to reusable object-oriented software design patterns.",
-      "genre": ["Software Engineering", "Architecture"],
+      "genre": [
+        "Software Engineering",
+        "Architecture"
+      ],
       "publishedYear": 1994,
       "available": true
     },
     {
-      "id": 6,
+      "id": "6",
       "title": "Deep Work",
       "author": "Cal Newport",
       "description": "Explains how focused work leads to better productivity and meaningful success.",
-      "genre": ["Productivity", "Focus"],
+      "genre": [
+        "Productivity",
+        "Focus"
+      ],
       "publishedYear": 2016,
       "available": false
     },
     {
-      "id": 7,
+      "id": "7",
       "title": "Introduction to Algorithms",
       "author": "Thomas H. Cormen",
       "description": "A comprehensive textbook covering modern algorithm design and analysis.",
-      "genre": ["Computer Science", "Algorithms"],
+      "genre": [
+        "Computer Science",
+        "Algorithms"
+      ],
       "publishedYear": 2009,
       "available": true
     },
     {
-      "id": 8,
+      "id": "8",
       "title": "Rich Dad Poor Dad",
       "author": "Robert Kiyosaki",
       "description": "A personal finance book focusing on financial education and mindset.",
-      "genre": ["Finance", "Personal Development"],
+      "genre": [
+        "Finance",
+        "Personal Development"
+      ],
       "publishedYear": 1997,
       "available": true
     },
     {
-      "id": 9,
+      "id": "9",
       "title": "The Alchemist",
       "author": "Paulo Coelho",
       "description": "A philosophical novel about following your dreams and listening to your heart.",
-      "genre": ["Fiction", "Philosophy"],
+      "genre": [
+        "Fiction",
+        "Philosophy"
+      ],
       "publishedYear": 1988,
       "available": true
     },
     {
-      "id": 10,
+      "id": "10",
       "title": "Start With Why",
       "author": "Simon Sinek",
       "description": "Explores how leaders inspire action by starting with a clear purpose.",
-      "genre": ["Business", "Leadership"],
+      "genre": [
+        "Business",
+        "Leadership"
+      ],
       "publishedYear": 2009,
       "available": false
+    },
+    {
+      "id": "108f",
+      "title": "Book Title",
+      "author": "Name",
+      "genre": [
+        "Programming",
+        "Test"
+      ],
+      "publishedYear": "2009",
+      "available": true,
+      "coverImage": null,
+      "description": "Description"
+    },
+    {
+      "id": "0303",
+      "title": "Title",
+      "author": "Name",
+      "genre": [
+        "Programming",
+        "Horror "
+      ],
+      "publishedYear": "2000",
+      "available": true,
+      "coverImage": null,
+      "description": "Description"
+    },
+    {
+      "id": "7316",
+      "title": "My Love",
+      "author": "Me",
+      "genre": [
+        "Romance"
+      ],
+      "publishedYear": "2007",
+      "available": true,
+      "coverImage": null,
+      "description": "How much I love you"
+    },
+    {
+      "id": "0cae",
+      "title": "Love and Life",
+      "author": "Min",
+      "genre": [
+        "Romance",
+        "Fantasy "
+      ],
+      "publishedYear": "2000",
+      "available": true,
+      "coverImage": null,
+      "description": "about love"
+    },
+    {
+      "id": "8c8a",
+      "title": "Book Title",
+      "author": "Name",
+      "genre": [
+        "Programming"
+      ],
+      "publishedYear": "2000",
+      "available": true,
+      "coverImage": {},
+      "description": "Description"
     }
   ]
 }
