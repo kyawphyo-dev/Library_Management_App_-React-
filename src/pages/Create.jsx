@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useFetch from "../hooks/useFetch";
+import { useNavigate } from "react-router";
 export default function Create() {
+  let navigate = useNavigate();
   const [preview, setPreview] = useState("https://via.placeholder.com/200x300");
   const [formData, setFormData] = useState({
     title: "",
@@ -41,14 +44,45 @@ export default function Create() {
 
     // Create preview URL
     const imageUrl = URL.createObjectURL(file);
-    console.log(imageUrl);
-
     setPreview(imageUrl);
+    setFormData((prev) => ({
+      ...prev,
+      coverImage: file,
+    }));
   };
+  // Handle change genre
+  const handleChangeGenre = (e) => {
+    const { value, checked } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      genre: checked
+        ? [...prev.genre, value] // add
+        : prev.genre.filter((g) => g !== value), // remove
+    }));
+  };
+  let { setPostData, data: book } = useFetch(
+    "http://localhost:4000/books",
+    "POST"
+  );
+  // Handle form submit
+  let addBook = (e) => {
+    e.preventDefault();
+    let data = {
+      ...formData,
+    };
+    setPostData(data);
+  };
+  // Handle Image Upload
+  useEffect(() => {
+    if (book) {
+      navigate("/");
+    }
+  }, [book]);
 
   return (
     <div className="max-w-4xl mx-auto p-5 md:p-10 shadow-primary bg-white rounded-lg shadow md:mt-10 mt-5">
-      <form>
+      <form onSubmit={addBook}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 ">
           <div className="">
             <div className="">
@@ -61,6 +95,7 @@ export default function Create() {
             <input
               type="file"
               accept="image/*"
+              onChange={handleFileChange}
               className="
                         block w-[80%] text-sm mt-3 text-gray-700
                         file:mr-4 file:py-2 file:px-4
@@ -71,7 +106,6 @@ export default function Create() {
                         border border-indigo-300/70 rounded-lg
                         cursor-pointer
                       "
-              onChange={handleFileChange}
             />
           </div>
           <div className=" space-y-2">
@@ -90,7 +124,7 @@ export default function Create() {
               type="text"
               value={formData.author}
               onChange={(e) =>
-                setFormData({ ...formData, title: e.target.value })
+                setFormData({ ...formData, author: e.target.value })
               }
               className="w-full border rounded-lg p-2 border-indigo-300/70 "
               placeholder="Author Name"
@@ -117,6 +151,9 @@ export default function Create() {
                     >
                       <input
                         type="checkbox"
+                        value={g}
+                        checked={formData.genre?.includes(g)}
+                        onChange={handleChangeGenre}
                         className="w-4 h-4 border border-indigo-300 rounded-lg text-indigo-600 focus:ring-0"
                       />
                       {g}
@@ -172,6 +209,10 @@ export default function Create() {
             {/* Public year */}
             <input
               type="number"
+              value={formData.publishedYear}
+              onChange={(e) =>
+                setFormData({ ...formData, publishedYear: e.target.value })
+              }
               min="1900"
               max={new Date().getFullYear()}
               className="w-full border rounded-lg p-2 border-indigo-300/70 "
@@ -182,6 +223,10 @@ export default function Create() {
             <label className="flex items-center gap-2 text-sm text-primary">
               <input
                 type="checkbox"
+                checked={formData.available}
+                onChange={(e) =>
+                  setFormData({ ...formData, available: e.target.checked })
+                }
                 name="available"
                 className="w-4 h-4 border border-indigo-300 rounded-lg text-indigo-600 focus:ring-0 "
               />

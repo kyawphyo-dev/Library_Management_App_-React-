@@ -1,5 +1,5 @@
 import React from "react";
-import Cover1 from "../assets/images/cover_1.jpg";
+import CleanCode from "../assets/bookcovers/Clean_code.jpeg";
 import { Link } from "react-router";
 
 export default function Book({ book }) {
@@ -10,7 +10,7 @@ export default function Book({ book }) {
         <Link to={`/books/${book.id}`}>
           <div className="md:h-48 h-35 bg-gray-200 mb-4 flex items-center justify-center">
             <img
-              src={Cover1}
+              src={CleanCode}
               alt="Book cover"
               className="w-full h-full object-cover rounded-lg"
             />
