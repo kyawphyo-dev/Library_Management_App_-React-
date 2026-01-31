@@ -12,10 +12,8 @@ function useFetch(url, method = "GET") {
       signal,
       method,
     };
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setLoading(true);
-
     let fetchData = () => {
+      setLoading(true);
       fetch(url, option)
         .then((res) => {
           if (!res.ok) {
@@ -30,6 +28,9 @@ function useFetch(url, method = "GET") {
         })
         .catch((err) => {
           setError(err.message);
+        })
+        .finally(() => {
+          setLoading(false);
         });
     };
 
@@ -42,7 +43,9 @@ function useFetch(url, method = "GET") {
         body: JSON.stringify(postData),
       };
       fetchData();
-    } else if (method === "GET") {
+    }
+
+    if (method === "GET") {
       fetchData();
     }
 

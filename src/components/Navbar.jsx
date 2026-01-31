@@ -1,47 +1,65 @@
-import React from "react";
-import { Link } from "react-router";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import useTheme from "../hooks/useTheme";
 
 export default function Navbar() {
+  let theme = useTheme();
+  let [search, setSearch] = useState("");
+  let navigate = useNavigate();
+  let handleSearch = () => {
+    navigate(`/?search=${search}`);
+  };
   return (
     <div>
-      <nav className="bg-gray-200 shadow-md border-b border-gray-300">
+      <nav
+        className={`${
+          theme.theme === "light"
+            ? "bg-gray-200 shadow-md border-b border-gray-300"
+            : "bg-gray-800 shadow-md border-b border-gray-700"
+        }`}
+      >
         <ul className="flex justify-between p-4  max-w-6xl mx-auto items-center">
           {/* Search Box */}
           <li className="flex items-center gap-2 p-2 rounded">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="size-6 text-primary"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-              />
-            </svg>
-
             <input
               type="text"
-              className=" w-full
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className={`w-full
                         sm:w-65
                         md:w-90
-                        lg:w-[400px]
+                        lg:w-100
                         px-3
                         py-2
                         text-sm
                         md:text-base
                         border
-                        border-slate-300
-                        rounded-lg
-                        focus:outline-none
-                        focus:ring-2
-                        focus:ring-indigo-500
-                        focus:border-transparent"
+                       ${
+                         theme.theme === "light"
+                           ? "border-gray-400 bg-white text-black placeholder-gray-500 focus:outline-primary focus:border-primary"
+                           : "border-gray-600 bg-gray-700 text-white placeholder-gray-400 focus:outline-primary focus:border-primary"
+                       }`}
               placeholder="Search"
             />
+            <button
+              onClick={handleSearch}
+              className="md:border border-primary text-primary px-3 py-2 rounded hover:bg-primary hover:text-white transition duration-300 flex"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                />
+              </svg>
+            </button>
           </li>
           {/* LogoSection */}
           <Link

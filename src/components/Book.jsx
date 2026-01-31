@@ -6,7 +6,11 @@ export default function Book({ book }) {
   return (
     <div>
       {/* Books */}
-      <div className="border border-primary p-4 rounded-lg shadow hover:shadow-lg transition">
+      <div
+        className={`border p-4 rounded-lg shadow hover:shadow-lg transition ${
+          book.available ? "border-primary" : "border-red-500"
+        }`}
+      >
         <Link to={`/books/${book.id}`}>
           <div className="md:h-48 h-35 bg-gray-200 mb-4 flex items-center justify-center">
             <img

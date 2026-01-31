@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import useFetch from "../hooks/useFetch";
 import { useNavigate } from "react-router";
+import PlaceHolderImg from "../assets/images/image_placeholder.jpeg";
+
 export default function Create() {
   let navigate = useNavigate();
-  const [preview, setPreview] = useState("https://via.placeholder.com/200x300");
+  const [preview, setPreview] = useState(PlaceHolderImg);
   const [formData, setFormData] = useState({
     title: "",
     author: "",
@@ -61,10 +63,12 @@ export default function Create() {
         : prev.genre.filter((g) => g !== value), // remove
     }));
   };
-  let { setPostData, data: book } = useFetch(
-    "http://localhost:4000/books",
-    "POST"
-  );
+  let {
+    setPostData,
+    data: book,
+    loading,
+    error,
+  } = useFetch("http://localhost:4000/books", "POST");
   // Handle form submit
   let addBook = (e) => {
     e.preventDefault();
@@ -117,6 +121,7 @@ export default function Create() {
                 setFormData({ ...formData, title: e.target.value })
               }
               className="w-full border rounded-lg p-2 border-indigo-300/70 "
+              required
               placeholder="Book Title"
             />
             {/* Author */}
@@ -128,6 +133,7 @@ export default function Create() {
               }
               className="w-full border rounded-lg p-2 border-indigo-300/70 "
               placeholder="Author Name"
+              required
             />
             {/* Description */}
             <textarea
@@ -138,6 +144,7 @@ export default function Create() {
               className="w-full border rounded-lg p-2 border-indigo-300/70 "
               placeholder="Book Description"
               rows="4"
+              required
             />
             {/* {Genre} */}
             <div>
@@ -217,6 +224,7 @@ export default function Create() {
               max={new Date().getFullYear()}
               className="w-full border rounded-lg p-2 border-indigo-300/70 "
               placeholder="Public year: e.g. 2008 "
+              required
             />
 
             {/* Available */}
@@ -236,9 +244,16 @@ export default function Create() {
             {/* Submit */}
             <button
               type="submit"
-              className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700"
+              disabled={loading}
+              className={`w-full py-2 rounded-lg text-white transition
+            ${
+              loading
+                ? "bg-indigo-400 cursor-not-allowed"
+                : "bg-indigo-600 hover:bg-indigo-700"
+            }
+            `}
             >
-              Save Book
+              {loading ? "Saving..." : "Save Book"}
             </button>
           </div>
         </div>
