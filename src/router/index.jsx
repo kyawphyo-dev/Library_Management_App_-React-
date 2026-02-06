@@ -2,7 +2,6 @@ import { createBrowserRouter } from "react-router";
 import Home from "../pages/Home";
 import Layout from "../Layout/Layout";
 import Create from "../pages/Create";
-import Search from "../pages/Search";
 import BookDetails from "../pages/BookDetails";
 
 const router = createBrowserRouter([
@@ -17,10 +16,6 @@ const router = createBrowserRouter([
       {
         path: "/create",
         element: <Create />,
-      },
-      {
-        path: "/search",
-        element: <Search />,
       },
       {
         path: "/books/:id",

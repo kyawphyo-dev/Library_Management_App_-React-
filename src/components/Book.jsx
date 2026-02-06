@@ -7,38 +7,42 @@ export default function Book({ book }) {
     <div>
       {/* Books */}
       <div
-        className={`border p-4 rounded-lg shadow hover:shadow-lg transition ${
-          book.available ? "border-primary" : "border-red-500"
+        className={`border p-4 rounded-lg shadow hover:shadow-lg bg-card transition min-h-80 md:min-h-110 ${
+          book.available ? "border-border" : "border-danger"
         }`}
       >
-        <Link to={`/books/${book.id}`}>
-          <div className="md:h-48 h-35 bg-gray-200 mb-4 flex items-center justify-center">
-            <img
-              src={CleanCode}
-              alt="Book cover"
-              className="w-full h-full object-cover rounded-lg"
-            />
-          </div>
-        </Link>
-        <div className="text-center space-y-2">
-          <h5 className="text-lg font-semibold ">{book.title}</h5>
-          <p className="text-gray-600">{book.author}</p>
-          <div className="hidden md:block space-y-2 my-2">
-            {book.genre.map((genre) => (
-              <span
-                key={genre}
-                className="inline-block bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-full mr-1"
-              >
-                {genre}
-              </span>
-            ))}
-          </div>
-          <Link
-            to={`/books/${book.id}`}
-            className="mt-2 bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-700"
-          >
-            View Details
+        <div className="flex flex-col h-full">
+          <Link to={`/books/${book.id}`}>
+            <div className="md:h-48 h-35 bg-bg mb-4 items-center justify-center">
+              <img
+                src={CleanCode}
+                alt="Book cover"
+                className="w-full h-full object-cover rounded-lg"
+              />
+            </div>
           </Link>
+          <div className="text-center space-y-2">
+            <h5 className="text-lg font-semibold text-text ">{book.title}</h5>
+            <p className="text-text-muted">{book.author}</p>
+            <div className="hidden md:block space-y-2 my-2">
+              {book.genre.map((genre) => (
+                <span
+                  key={genre}
+                  className="inline-block bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-full mr-1"
+                >
+                  {genre}
+                </span>
+              ))}
+            </div>
+            <div className="mt-auto">
+              <Link
+                to={`/books/${book.id}`}
+                className="mt-2 bg-primary text-white px-4 py-2 rounded hover:bg-primary-hover transition inline-block text-sm"
+              >
+                View Details
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </div>

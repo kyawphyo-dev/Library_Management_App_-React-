@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useTheme from "../hooks/useTheme";
+import lightIcon from "../assets/Icons/lightmode.svg";
+import darkIcon from "../assets/Icons/darkmode.svg";
 
 export default function Navbar() {
-  let theme = useTheme();
+  let { changeTheme, isDark } = useTheme();
   let [search, setSearch] = useState("");
   let navigate = useNavigate();
   let handleSearch = () => {
@@ -11,13 +13,7 @@ export default function Navbar() {
   };
   return (
     <div>
-      <nav
-        className={`${
-          theme.theme === "light"
-            ? "bg-gray-200 shadow-md border-b border-gray-300"
-            : "bg-gray-800 shadow-md border-b border-gray-700"
-        }`}
-      >
+      <nav className={`bg-bg border-border shadow-lg`}>
         <ul className="flex justify-between p-4  max-w-6xl mx-auto items-center">
           {/* Search Box */}
           <li className="flex items-center gap-2 p-2 rounded">
@@ -34,10 +30,11 @@ export default function Navbar() {
                         text-sm
                         md:text-base
                         border
+                        rounded
                        ${
-                         theme.theme === "light"
-                           ? "border-gray-400 bg-white text-black placeholder-gray-500 focus:outline-primary focus:border-primary"
-                           : "border-gray-600 bg-gray-700 text-white placeholder-gray-400 focus:outline-primary focus:border-primary"
+                         isDark
+                           ? "border-gray-600 bg-gray-700 text-white placeholder-gray-400 focus:outline-primary focus:border-primary"
+                           : "border-gray-400 bg-white text-black placeholder-gray-500 focus:outline-primary focus:border-primary"
                        }`}
               placeholder="Search"
             />
@@ -64,7 +61,7 @@ export default function Navbar() {
           {/* LogoSection */}
           <Link
             to="/"
-            className="flex items-center gap-2 border border-indigo-600 p-2 rounded md:-ml-50"
+            className="flex items-center gap-2 border border-primary p-2 rounded md:-ml-50"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -72,7 +69,7 @@ export default function Navbar() {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="size-6 text-indigo-600"
+              className="size-6 text-primary"
             >
               <path
                 strokeLinecap="round"
@@ -109,12 +106,32 @@ export default function Navbar() {
 
               <span className="hidden md:block">Add Book</span>
             </Link>
+
+            {/* profile */}
             <div className="w-10 h-10">
               <img
                 src="https://lh3.googleusercontent.com/a/ACg8ocKhLm_BGPuQWHk9yTA_LlJ71ULC2sYNqKJGKrjg0BrywXUmlVE=s96-c"
                 alt=""
                 className="w-full rounded-full border border-primary"
               />
+            </div>
+            {/* Theme Toggler */}
+            <div className="w-6 h-6 ml-3 cursor-pointer">
+              {!isDark && (
+                <img
+                  src={darkIcon}
+                  alt=""
+                  className="color-dark"
+                  onClick={() => changeTheme("dark")}
+                />
+              )}
+              {isDark && (
+                <img
+                  src={lightIcon}
+                  alt=""
+                  onClick={() => changeTheme("light")}
+                />
+              )}
             </div>
           </li>
         </ul>

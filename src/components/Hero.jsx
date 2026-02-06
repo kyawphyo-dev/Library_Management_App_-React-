@@ -13,7 +13,7 @@ export default function Hero() {
             <p className="md:mt-4 mt-2 text-slate-600 md:text-lg">
               Manage books, members, and borrowing records in one place.
             </p>
-            <button className="md:mt-6 mt-3 md:text-lg bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700">
+            <button className="md:mt-6 mt-3 md:text-lg bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-hover">
               Get Started
             </button>
           </div>

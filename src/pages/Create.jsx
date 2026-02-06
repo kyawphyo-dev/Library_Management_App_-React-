@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import useFetch from "../hooks/useFetch";
 import { useNavigate } from "react-router";
 import PlaceHolderImg from "../assets/images/image_placeholder.jpeg";
+import { Link } from "react-router-dom";
+import backarrow from "../assets/Icons/backarrow.svg";
 
 export default function Create() {
   let navigate = useNavigate();
@@ -85,7 +87,7 @@ export default function Create() {
   }, [book]);
 
   return (
-    <div className="max-w-4xl mx-auto p-5 md:p-10 shadow-primary bg-white rounded-lg shadow md:mt-10 mt-5">
+    <div className="max-w-4xl mx-auto p-5 md:p-10 shadow-primary bg-card rounded-lg shadow md:mt-10 mt-5">
       <form onSubmit={addBook}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 ">
           <div className="">
@@ -101,16 +103,22 @@ export default function Create() {
               accept="image/*"
               onChange={handleFileChange}
               className="
-                        block w-[80%] text-sm mt-3 text-gray-700
+                        block w-[80%] text-sm mt-3 text-text
                         file:mr-4 file:py-2 file:px-4
                         file:rounded-lg file:border-0
                         file:text-sm file:font-medium
-                        file:bg-indigo-50 file:text-indigo-700
+                        file:bg-indigo-50 file:text-indigo-600
                         hover:file:bg-indigo-100
-                        border border-indigo-300/70 rounded-lg
+                        border border-border rounded-lg
                         cursor-pointer
                       "
             />
+            <Link
+              to={`/`}
+              className="mt-5 inline-block text-sm text-primary hover:underline d-flex"
+            >
+              Back to Home
+            </Link>
           </div>
           <div className=" space-y-2">
             {/* Title */}
@@ -120,7 +128,7 @@ export default function Create() {
               onChange={(e) =>
                 setFormData({ ...formData, title: e.target.value })
               }
-              className="w-full border rounded-lg p-2 border-indigo-300/70 "
+              className="w-full text-text border rounded-lg p-2 border-border "
               required
               placeholder="Book Title"
             />
@@ -131,7 +139,7 @@ export default function Create() {
               onChange={(e) =>
                 setFormData({ ...formData, author: e.target.value })
               }
-              className="w-full border rounded-lg p-2 border-indigo-300/70 "
+              className="w-full border rounded-lg p-2 border-border "
               placeholder="Author Name"
               required
             />
@@ -141,7 +149,7 @@ export default function Create() {
               onChange={(e) =>
                 setFormData({ ...formData, description: e.target.value })
               }
-              className="w-full border rounded-lg p-2 border-indigo-300/70 "
+              className="w-full border rounded-lg p-2 border-border "
               placeholder="Book Description"
               rows="4"
               required
@@ -161,7 +169,7 @@ export default function Create() {
                         value={g}
                         checked={formData.genre?.includes(g)}
                         onChange={handleChangeGenre}
-                        className="w-4 h-4 border border-indigo-300 rounded-lg text-indigo-600 focus:ring-0"
+                        className="w-4 h-4 border bordborder rounded-lg text-indigo-600 focus:ring-0"
                       />
                       {g}
                     </label>
@@ -169,7 +177,7 @@ export default function Create() {
                   <button
                     type="button"
                     onClick={() => setShowAddGenre(!showAddGenre)}
-                    className={`px-2 py-1 border border-indigo-300/70 rounded-lg text-xs text-indigo-600 hover:bg-indigo-50 transition ml-2 `}
+                    className={`px-2 py-1 border border-border rounded-lg text-xs text-indigo-600 hover:bg-indigo-50 transition ml-2 `}
                   >
                     +Genre
                   </button>
@@ -184,9 +192,9 @@ export default function Create() {
                     placeholder="Add new genre"
                     className="
                                 flex-1
-                                w-full border rounded-lg p-2 border-indigo-300/70 
+                                w-full border rounded-lg p-2 border-border 
                                 px-3 py-2 text-sm
-                                text-gray-700
+                                text-text
                                 placeholder-gray-400
                                 focus:border-indigo-500
                                 focus:ring-2 focus:ring-indigo-500/30
@@ -199,9 +207,9 @@ export default function Create() {
                     className="
                                 flex items-center justify-center
                                 rounded-md
-                                bg-indigo-600 px-3 py-2
+                                bg-primary px-3 py-2
                                 text-sm font-semibold text-white
-                                hover:bg-indigo-700
+                                hover:bg-primary-hover
                                 active:scale-95
                                 transition
                               "

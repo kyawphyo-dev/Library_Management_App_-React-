@@ -20,7 +20,7 @@ export default function BookList() {
     <>
       {loading && <div className="text-blue-500">Loading...</div>}
       {!!books && (
-        <div className=" grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-4 mt-5">
+        <div className=" grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-4 mt-5 min-h-110">
           {books.map((book) => (
             <Book key={book.id} book={book} />
           ))}
