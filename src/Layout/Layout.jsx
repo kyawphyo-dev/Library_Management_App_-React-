@@ -9,11 +9,13 @@ export default function Layout() {
   const location = useLocation();
   const nodeRef = useRef(null);
   let { isDark } = useTheme();
-
+  let body = document.body;
   useEffect(() => {
     if (isDark) {
+      body.classList.add("bg-bg");
       document.documentElement.classList.add("dark");
     } else {
+      body.classList.remove("bg-bg");
       document.documentElement.classList.remove("dark");
     }
   }, [isDark]);

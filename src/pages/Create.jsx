@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
-import useFetch from "../hooks/useFetch";
 import { useNavigate } from "react-router";
 import PlaceHolderImg from "../assets/images/image_placeholder.jpeg";
 import { Link } from "react-router-dom";
-import backarrow from "../assets/Icons/backarrow.svg";
+import { collection, serverTimestamp } from "firebase/firestore";
+import db from "../firebase/index";
+import { addDoc } from "firebase/firestore";
+import { add } from "firebase/firestore/pipelines";
 
 export default function Create() {
   let navigate = useNavigate();
   const [preview, setPreview] = useState(PlaceHolderImg);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     author: "",
@@ -65,26 +68,28 @@ export default function Create() {
         : prev.genre.filter((g) => g !== value), // remove
     }));
   };
-  let {
-    setPostData,
-    data: book,
-    loading,
-    error,
-  } = useFetch("http://localhost:4000/books", "POST");
+
   // Handle form submit
-  let addBook = (e) => {
+  const addBook = async (e) => {
     e.preventDefault();
-    let data = {
-      ...formData,
-    };
-    setPostData(data);
-  };
-  // Handle Image Upload
-  useEffect(() => {
-    if (book) {
+
+    try {
+      let data = {
+        ...formData,
+        date: serverTimestamp(),
+      };
+
+      let ref = collection(db, "books");
+      await addDoc(ref, data);
       navigate("/");
+
+      console.log("Book added successfully!");
+    } catch (error) {
+      console.log("Error adding book:", error);
     }
-  }, [book]);
+  };
+
+  // Handle Image Upload
 
   return (
     <div className="max-w-4xl mx-auto p-5 md:p-10 shadow-primary bg-card rounded-lg shadow md:mt-10 mt-5">
@@ -139,7 +144,7 @@ export default function Create() {
               onChange={(e) =>
                 setFormData({ ...formData, author: e.target.value })
               }
-              className="w-full border rounded-lg p-2 border-border "
+              className="w-full text-text border rounded-lg p-2 border-border "
               placeholder="Author Name"
               required
             />
@@ -149,7 +154,7 @@ export default function Create() {
               onChange={(e) =>
                 setFormData({ ...formData, description: e.target.value })
               }
-              className="w-full border rounded-lg p-2 border-border "
+              className="w-full border rounded-lg p-2 text-text border-border "
               placeholder="Book Description"
               rows="4"
               required
@@ -201,7 +206,7 @@ export default function Create() {
                                 outline-none
                               "
                   />
-
+                  {/* Add Genre button */}
                   <button
                     type="button"
                     className="
@@ -230,7 +235,7 @@ export default function Create() {
               }
               min="1900"
               max={new Date().getFullYear()}
-              className="w-full border rounded-lg p-2 border-indigo-300/70 "
+              className="w-full border text-text rounded-lg p-2 border-indigo-300/70 "
               placeholder="Public year: e.g. 2008 "
               required
             />

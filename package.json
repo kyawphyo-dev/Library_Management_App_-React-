@@ -13,6 +13,7 @@
   "dependencies": {
     "@bkrem/react-transition-group": "^1.3.5",
     "@tailwindcss/vite": "^4.1.18",
+    "firebase": "^12.9.0",
     "lottie-react": "^2.4.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

@@ -25,7 +25,7 @@ export default function Book({ book }) {
             <h5 className="text-lg font-semibold text-text ">{book.title}</h5>
             <p className="text-text-muted">{book.author}</p>
             <div className="hidden md:block space-y-2 my-2">
-              {book.genre.map((genre) => (
+              {book.genre?.map((genre) => (
                 <span
                   key={genre}
                   className="inline-block bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-full mr-1"
