@@ -6,7 +6,7 @@ import {
   collection,
   doc,
   deleteDoc,
-  getDocs,
+  onSnapshot,
   orderBy,
   query,
 } from "firebase/firestore";
@@ -24,31 +24,37 @@ export default function BookList() {
   //   error,
   // } = useFetch(`http://localhost:4000/books?q=${search || ""}`);
   // Fetch books from Firestore
-  useEffect(function () {
-    const fetchBooks = async () => {
-      setLoading(true);
-      let ref = collection(db, "books");
-      let q = query(ref, orderBy("date", "desc"));
-      try {
-        let docs = await getDocs(q);
-        if (docs.empty) {
+  useEffect(() => {
+    setLoading(true);
+
+    let ref = collection(db, "books");
+    let q = query(ref, orderBy("date", "desc"));
+
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
+        if (snapshot.empty) {
+          setBooks([]);
           setError("No books found");
         } else {
-          let booksData = [];
-          docs.forEach((doc) => {
-            let book = { id: doc.id, ...doc.data() };
-            booksData.push(book);
-          });
+          let booksData = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+
           setBooks(booksData);
           setError("");
         }
-      } catch (err) {
+        setLoading(false);
+      },
+      (err) => {
         setError("Failed to fetch books");
-      } finally {
         setLoading(false);
       }
-    };
-    fetchBooks();
+    );
+
+    // ✅ cleanup (important!)
+    return () => unsubscribe();
   }, []);
   if (error) {
     return <div className="text-red-500">Error: {error}</div>;

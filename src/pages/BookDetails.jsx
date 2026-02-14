@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router";
 import db from "../firebase/index";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import CV from "../assets/bookcovers/cover_1.jpg";
 
 export default function BookDetails() {
@@ -11,20 +11,29 @@ export default function BookDetails() {
   let [book, setBook] = useState();
   let { id } = useParams();
   useEffect(() => {
-    const fetchBook = async () => {
-      setLoading(true);
-      let ref = doc(db, "books", id);
-      let bookdata = await getDoc(ref);
-      if (bookdata.exists()) {
-        setBook({ id: bookdata.id, ...bookdata.data() });
-        setError("");
+    setLoading(true);
+
+    let ref = doc(db, "books", id);
+
+    const unsubscribe = onSnapshot(
+      ref,
+      (bookdata) => {
+        if (bookdata.exists()) {
+          setBook({ id: bookdata.id, ...bookdata.data() });
+          setError("");
+        } else {
+          setError("Book not found");
+        }
         setLoading(false);
-      } else {
-        setError("Book not found");
+      },
+      (err) => {
+        setError("Failed to fetch book");
         setLoading(false);
       }
-    };
-    fetchBook();
+    );
+
+    // ✅ cleanup (important)
+    return () => unsubscribe();
   }, [id]);
 
   if (error) {
