@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import PlaceHolderImg from "../assets/images/image_placeholder.jpeg";
 import { Link } from "react-router-dom";
 import { collection, serverTimestamp } from "firebase/firestore";
 import db from "../firebase/index";
-import { addDoc } from "firebase/firestore";
-import { add } from "firebase/firestore/pipelines";
+import { addDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 
 export default function Create() {
+  let { id } = useParams();
+
   let navigate = useNavigate();
+  // Form States
+  const [isEdit, setIsEdit] = useState(false);
   const [preview, setPreview] = useState(PlaceHolderImg);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -29,19 +32,30 @@ export default function Create() {
     "Web Development",
     "Database",
   ]);
-  // Handle add genre
+
+  // Handle add genre input
   const handleAddGenre = () => {
     if (!newGenre.trim()) {
       setShowAddGenre(false);
       return;
     }
-
     if (!genres.includes(newGenre)) {
       setGenres((prev) => [...prev, newGenre]); // ✅ state update
     }
-
     setNewGenre("");
     setShowAddGenre(false); // close form & show checkboxes again
+  };
+
+  // Handle change genre
+  const handleChangeGenre = (e) => {
+    const { value, checked } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      genre: checked
+        ? [...prev.genre, value] // add
+        : prev.genre.filter((g) => g !== value), // remove
+    }));
   };
 
   // Handle file input change for img
@@ -57,20 +71,46 @@ export default function Create() {
       coverImage: file,
     }));
   };
-  // Handle change genre
-  const handleChangeGenre = (e) => {
-    const { value, checked } = e.target;
 
-    setFormData((prev) => ({
-      ...prev,
-      genre: checked
-        ? [...prev.genre, value] // add
-        : prev.genre.filter((g) => g !== value), // remove
-    }));
-  };
+  //Trigger edit mode
+  useEffect(() => {
+    let formSwitch = async () => {
+      if (id) {
+        setIsEdit(true);
+        let docRef = doc(db, "books", id);
+        let docSnap = await getDoc(docRef);
+        let data = docSnap.data();
+        setPreview(data.coverImage || PlaceHolderImg);
+        setGenres(data.genre || []);
+        setFormData((prev) => ({
+          ...prev,
+          title: data.title,
+          author: data.author,
+          description: data.description,
+          publishedYear: data.publishedYear,
+          available: data.available,
+          genre: data.genre || [],
+        }));
+      } else {
+        setIsEdit(false);
+        setPreview(PlaceHolderImg);
+
+        setFormData({
+          title: "",
+          author: "",
+          genre: [],
+          publishedYear: "",
+          available: false,
+          coverImage: null,
+          description: "",
+        });
+      }
+    };
+    formSwitch();
+  }, []);
 
   // Handle form submit
-  const addBook = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
@@ -79,21 +119,22 @@ export default function Create() {
         date: serverTimestamp(),
       };
 
-      let ref = collection(db, "books");
-      await addDoc(ref, data);
+      if (isEdit) {
+        let ref = doc(db, "books", id);
+        await updateDoc(ref, data);
+      } else {
+        let ref = collection(db, "books");
+        await addDoc(ref, data);
+      }
       navigate("/");
-
-      console.log("Book added successfully!");
     } catch (error) {
       console.log("Error adding book:", error);
     }
   };
 
-  // Handle Image Upload
-
   return (
     <div className="max-w-4xl mx-auto p-5 md:p-10 shadow-primary bg-card rounded-lg shadow md:mt-10 mt-5">
-      <form onSubmit={addBook}>
+      <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 ">
           <div className="">
             <div className="">
@@ -266,7 +307,7 @@ export default function Create() {
             }
             `}
             >
-              {loading ? "Saving..." : "Save Book"}
+              {isEdit ? "Update Book" : "Save Book"}
             </button>
           </div>
         </div>

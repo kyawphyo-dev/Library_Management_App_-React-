@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 import Book from "./Book";
 import { useLocation } from "react-router-dom";
 import db from "../firebase/index";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  deleteDoc,
+  getDocs,
+  orderBy,
+  query,
+} from "firebase/firestore";
 
 export default function BookList() {
   let location = useLocation();
@@ -16,7 +23,7 @@ export default function BookList() {
   //   loading,
   //   error,
   // } = useFetch(`http://localhost:4000/books?q=${search || ""}`);
-
+  // Fetch books from Firestore
   useEffect(function () {
     const fetchBooks = async () => {
       setLoading(true);
@@ -47,13 +54,19 @@ export default function BookList() {
     return <div className="text-red-500">Error: {error}</div>;
   }
 
+  let deleteBook = async (id) => {
+    let ref = doc(db, "books", id);
+    await deleteDoc(ref);
+    setBooks((prev) => prev.filter((book) => book.id !== id));
+  };
+
   return (
     <>
       {loading && <div className="text-blue-500">Loading...</div>}
       {!!books && (
-        <div className=" grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-4 mt-5 min-h-110">
+        <div className=" grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mt-5 min-h-110">
           {books.map((book) => (
-            <Book key={book.id} book={book} />
+            <Book key={book.id} book={book} deleteBook={deleteBook} />
           ))}
         </div>
       )}
