@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import Book from "./Book";
 import { useLocation } from "react-router-dom";
@@ -25,36 +26,36 @@ export default function BookList() {
   // } = useFetch(`http://localhost:4000/books?q=${search || ""}`);
   // Fetch books from Firestore
   useEffect(() => {
-    setLoading(true);
+    let Fetchbooks = async () => {
+      setLoading(true);
+      let ref = collection(db, "books");
+      let q = await query(ref, orderBy("date", "desc"));
 
-    let ref = collection(db, "books");
-    let q = query(ref, orderBy("date", "desc"));
+      onSnapshot(
+        q,
+        (snapshot) => {
+          if (snapshot.empty) {
+            setBooks([]);
+            setError("No books found");
+          } else {
+            let booksData = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
 
-    const unsubscribe = onSnapshot(
-      q,
-      (snapshot) => {
-        if (snapshot.empty) {
-          setBooks([]);
-          setError("No books found");
-        } else {
-          let booksData = snapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }));
-
-          setBooks(booksData);
-          setError("");
+            setBooks(booksData);
+            setError("");
+          }
+          setLoading(false);
+        },
+        (err) => {
+          setError("Failed to fetch books");
+          setLoading(false);
         }
-        setLoading(false);
-      },
-      (err) => {
-        setError("Failed to fetch books");
-        setLoading(false);
-      }
-    );
-
+      );
+    };
+    Fetchbooks();
     // ✅ cleanup (important!)
-    return () => unsubscribe();
   }, []);
   if (error) {
     return <div className="text-red-500">Error: {error}</div>;

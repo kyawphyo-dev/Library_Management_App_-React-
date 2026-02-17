@@ -13,7 +13,6 @@ export default function Create() {
   // Form States
   const [isEdit, setIsEdit] = useState(false);
   const [preview, setPreview] = useState(PlaceHolderImg);
-  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     author: "",
@@ -298,13 +297,7 @@ export default function Create() {
             {/* Submit */}
             <button
               type="submit"
-              disabled={loading}
-              className={`w-full py-2 rounded-lg text-white transition
-            ${
-              loading
-                ? "bg-indigo-400 cursor-not-allowed"
-                : "bg-indigo-600 hover:bg-indigo-700"
-            }
+              className={`w-full py-2 rounded-lg text-white transition bg-primary hover:bg-primary-hover active:scale-95s
             `}
             >
               {isEdit ? "Update Book" : "Save Book"}

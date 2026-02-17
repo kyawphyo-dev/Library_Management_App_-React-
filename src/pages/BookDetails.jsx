@@ -11,29 +11,30 @@ export default function BookDetails() {
   let [book, setBook] = useState();
   let { id } = useParams();
   useEffect(() => {
-    setLoading(true);
+    let FetchDetail = async () => {
+      setLoading(true);
 
-    let ref = doc(db, "books", id);
+      let ref = doc(db, "books", id);
 
-    const unsubscribe = onSnapshot(
-      ref,
-      (bookdata) => {
-        if (bookdata.exists()) {
-          setBook({ id: bookdata.id, ...bookdata.data() });
-          setError("");
-        } else {
-          setError("Book not found");
+      onSnapshot(
+        ref,
+        (bookdata) => {
+          if (bookdata.exists()) {
+            setBook({ id: bookdata.id, ...bookdata.data() });
+            setError("");
+          } else {
+            setError("Book not found");
+          }
+          setLoading(false);
+        },
+        // eslint-disable-next-line no-unused-vars
+        (err) => {
+          setError("Failed to fetch book");
+          setLoading(false);
         }
-        setLoading(false);
-      },
-      (err) => {
-        setError("Failed to fetch book");
-        setLoading(false);
-      }
-    );
-
-    // ✅ cleanup (important)
-    return () => unsubscribe();
+      );
+    };
+    FetchDetail();
   }, [id]);
 
   if (error) {
@@ -43,15 +44,21 @@ export default function BookDetails() {
     <div className="">
       {loading && <div className="text-blue-500">Loading...</div>}
       {book && (
-        <div className="max-w-3xl p-3 md:p-5 shadow-primary bg-bg rounded-lg shadow md:mt-10 mt-5">
+        <div className="max-w-3xl p-3 md:p-5 shadow-primary bg-bg rounded-lg shadow md:mt-10 mt-5 ">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-5">
             {/* Left: Book Cover */}
-            <div className="h-full flex items-center justify-center">
+            <div className="h-full flex items-center justify-center flex flex-col">
               <img
                 src={CV}
                 alt={book.title}
                 className="w-full md:w-[80%] h-80 md:h-100 border rounded-lg object-cover md:ms-5"
               />
+              <Link
+                to={`/`}
+                className="mt-5 inline-block text-sm text-primary hover:underline d-flex"
+              >
+                Back to Home
+              </Link>
             </div>
             {/* Right Book data */}
             <div className=" text-text  text-center md:text-left">
