@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Book from "./Book";
 import { useLocation } from "react-router-dom";
-import db from "../firebase/index";
+import { db } from "../firebase/index";
 import {
   collection,
   doc,

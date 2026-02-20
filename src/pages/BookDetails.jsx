@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router";
-import db from "../firebase/index";
+import { db } from "../firebase/index";
 import { doc, onSnapshot } from "firebase/firestore";
 import CV from "../assets/bookcovers/cover_1.jpg";
 

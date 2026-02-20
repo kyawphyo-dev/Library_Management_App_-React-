@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router";
 import PlaceHolderImg from "../assets/images/image_placeholder.jpeg";
 import { Link } from "react-router-dom";
 import { collection, serverTimestamp } from "firebase/firestore";
-import db from "../firebase/index";
+import { db } from "../firebase/index";
 import { addDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 
 export default function Create() {
