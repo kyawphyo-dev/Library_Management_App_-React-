@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useTheme from "../hooks/useTheme";
 import lightIcon from "../assets/Icons/lightmode.svg";
 import darkIcon from "../assets/Icons/darkmode.svg";
 import useSignOut from "../hooks/useSignOut";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function Navbar() {
+  let { user } = useContext(AuthContext);
   let { changeTheme, isDark } = useTheme();
   let [search, setSearch] = useState("");
   let navigate = useNavigate();
@@ -30,7 +32,7 @@ export default function Navbar() {
               onChange={(e) => setSearch(e.target.value)}
               className={`w-full
                         sm:w-65
-                        md:w-90
+                        md:w-80
                         lg:w-100
                         px-3
                         py-2
@@ -55,7 +57,7 @@ export default function Navbar() {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-6"
+                className="size-4 lg:size-6"
               >
                 <path
                   strokeLinecap="round"
@@ -76,7 +78,7 @@ export default function Navbar() {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="size-6 text-primary"
+              className="size-5 lg:size-6 text-primary"
             >
               <path
                 strokeLinecap="round"
@@ -85,7 +87,7 @@ export default function Navbar() {
               />
             </svg>
 
-            <span className="font-bold text-lg text-primary hidden md:block">
+            <span className="font-bold text-sm lg:text-lg text-primary hidden md:block">
               LMS
             </span>
           </Link>
@@ -102,7 +104,7 @@ export default function Navbar() {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-6"
+                className="size-5 lg:size-6"
               >
                 <path
                   strokeLinecap="round"
@@ -111,7 +113,9 @@ export default function Navbar() {
                 />
               </svg>
 
-              <span className="hidden md:block">Add Book</span>
+              <span className="hidden md:block text-sm lg:text-base">
+                Add Book
+              </span>
             </Link>
 
             {/* profile */}
@@ -140,14 +144,24 @@ export default function Navbar() {
                 />
               )}
             </div>
-            {/* Logout Button */}
-            <div>
-              <button
-                onClick={signOut}
-                className="border border-danger text-danger hover:bg-danger hover:text-white transition text-sm px-3 py-2 rounded-lg"
-              >
-                Logout
-              </button>
+            {/*Login and Logout buttons */}
+            <div className="space-x-2">
+              {!user && (
+                <Link
+                  className="border border-primary px-4 py-2 rounded-lg hover:bg-primary hover:text-white transition text-sm"
+                  to="/login"
+                >
+                  Login
+                </Link>
+              )}
+              {!!user && (
+                <button
+                  onClick={signOut}
+                  className="border border-danger text-danger hover:bg-danger hover:text-white transition text-sm px-2 py-2 rounded-lg"
+                >
+                  Logout
+                </button>
+              )}
             </div>
           </li>
         </ul>

@@ -47,7 +47,7 @@ export default function BookDetails() {
         <div className="max-w-3xl p-3 md:p-5 shadow-primary bg-bg rounded-lg shadow md:mt-10 mt-5 ">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-5">
             {/* Left: Book Cover */}
-            <div className="h-full flex items-center justify-center flex flex-col">
+            <div className="h-full flex justify-center flex flex-col">
               <img
                 src={CV}
                 alt={book.title}
@@ -55,7 +55,7 @@ export default function BookDetails() {
               />
               <Link
                 to={`/`}
-                className="mt-5 inline-block text-sm text-primary hover:underline d-flex"
+                className="mt-3 ms-5 inline-block text-sm text-primary hover:underline d-flex"
               >
                 Back to Home
               </Link>

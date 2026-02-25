@@ -1,6 +1,7 @@
 import React from "react";
 import useSignIn from "../hooks/useSignIn";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = React.useState("");
@@ -59,12 +60,12 @@ export default function Login() {
         </div>
         <div className="flex items-center justify-between">
           <button
-            className="bg-primary hover:bg-primary-hover flex items-center text-white font-bold py-2 px-4 rounded"
+            className="bg-primary hover:bg-primary-hover flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded"
             type="submit"
           >
             {loading && (
               <svg
-                class="mr-3 -ml-1 size-5 animate-spin text-white"
+                className="mr-3 -ml-1 size-5 animate-spin text-white"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -86,6 +87,15 @@ export default function Login() {
             )}
             Login
           </button>
+        </div>
+        <div className="mt-4 text-center">
+          <Link
+            to="/register"
+            className="text-primary hover:text-primary-hover"
+          >
+            {" "}
+            Create an account
+          </Link>
         </div>
       </form>
       <p className="text-center text-gray-500 text-xs">

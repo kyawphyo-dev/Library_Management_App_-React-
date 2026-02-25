@@ -1,6 +1,7 @@
 import React from "react";
 import useSignUp from "../hooks/useSignUp";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 export default function Register() {
   let { error, loading, signUp } = useSignUp();
@@ -59,7 +60,7 @@ export default function Register() {
         </div>
         <div className="flex items-center justify-between">
           <button
-            className="bg-primary flex items-center  hover:bg-primary-hover  text-white font-bold py-2 px-4 rounded"
+            className="bg-primary flex items-center justify-center w-full  hover:bg-primary-hover  text-white font-bold py-2 px-4 rounded"
             type="submit"
           >
             {loading && (
@@ -86,6 +87,11 @@ export default function Register() {
             )}
             Sign In
           </button>
+        </div>
+        <div className="text-center mt-4">
+          <Link to="/login" className="text-primary hover:text-primary-hover">
+            Already have an account?
+          </Link>
         </div>
       </form>
       <p className="text-center text-gray-500 text-xs">
