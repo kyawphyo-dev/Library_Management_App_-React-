@@ -1,42 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router";
-import { db } from "../firebase/index";
-import { doc, onSnapshot } from "firebase/firestore";
 import CV from "../assets/bookcovers/cover_1.jpg";
+import useFirestore from "../hooks/useFirestore";
 
 export default function BookDetails() {
-  let [error, setError] = useState("");
-  let [loading, setLoading] = useState(false);
-  let [book, setBook] = useState();
   let { id } = useParams();
-  useEffect(() => {
-    let FetchDetail = async () => {
-      setLoading(true);
-
-      let ref = doc(db, "books", id);
-
-      onSnapshot(
-        ref,
-        (bookdata) => {
-          if (bookdata.exists()) {
-            setBook({ id: bookdata.id, ...bookdata.data() });
-            setError("");
-          } else {
-            setError("Book not found");
-          }
-          setLoading(false);
-        },
-        // eslint-disable-next-line no-unused-vars
-        (err) => {
-          setError("Failed to fetch book");
-          setLoading(false);
-        }
-      );
-    };
-    FetchDetail();
-  }, [id]);
-
+  let { getDocument } = useFirestore();
+  let { data: book, loading, error } = getDocument("books", id);
   if (error) {
     return <div className="text-red-500">Error: {error}</div>;
   }

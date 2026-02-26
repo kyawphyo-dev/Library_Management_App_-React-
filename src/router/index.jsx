@@ -9,6 +9,7 @@ import React, { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 
 export default function index() {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   let { authReady, user } = useContext(AuthContext);
   let isAuth = !!user;
   const router = createBrowserRouter([

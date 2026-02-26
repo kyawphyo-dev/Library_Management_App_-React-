@@ -11,60 +11,24 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
+import useFirestore from "../hooks/useFirestore";
 
 export default function BookList() {
   let location = useLocation();
   let param = new URLSearchParams(location.search);
   let search = param.get("search");
-  let [books, setBooks] = useState([]);
-  let [error, setError] = useState("");
-  let [loading, setLoading] = useState(false);
-  // let {
-  //   data: books,
-  //   loading,
-  //   error,
-  // } = useFetch(`http://localhost:4000/books?q=${search || ""}`);
+
   // Fetch books from Firestore
-  useEffect(() => {
-    let Fetchbooks = async () => {
-      setLoading(true);
-      let ref = collection(db, "books");
-      let q = await query(ref, orderBy("date", "desc"));
-
-      onSnapshot(
-        q,
-        (snapshot) => {
-          if (snapshot.empty) {
-            setBooks([]);
-            setError("No books found");
-          } else {
-            let booksData = snapshot.docs.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            }));
-
-            setBooks(booksData);
-            setError("");
-          }
-          setLoading(false);
-        },
-        (err) => {
-          setError("Failed to fetch books");
-          setLoading(false);
-        }
-      );
-    };
-    Fetchbooks();
-    // ✅ cleanup (important!)
-  }, []);
+  let { getCollection, deleteDocument } = useFirestore();
+  let { data: books, loading, error } = getCollection("books");
   if (error) {
     return <div className="text-red-500">Error: {error}</div>;
   }
 
+  // Delete book from Firestore
   let deleteBook = async (id) => {
-    let ref = doc(db, "books", id);
-    await deleteDoc(ref);
-    setBooks((prev) => prev.filter((book) => book.id !== id));
+    deleteDocument("books", id);
+    //  setBooks((prev) => prev.filter((book) => book.id !== id));
   };
 
   return (
