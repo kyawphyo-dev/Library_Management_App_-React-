@@ -1,16 +1,19 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import PlaceHolderImg from "../assets/images/image_placeholder.jpeg";
 import { Link } from "react-router-dom";
 import { db } from "../firebase/index";
 import { doc, getDoc } from "firebase/firestore";
 import useFirestore from "../hooks/useFirestore";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function Create() {
   let { id } = useParams();
+  let { user } = useContext(AuthContext);
 
   let navigate = useNavigate();
   let { updateDocument, addDocument } = useFirestore();
+
   // Form States
   const [isEdit, setIsEdit] = useState(false);
   const [preview, setPreview] = useState(PlaceHolderImg);
@@ -116,6 +119,7 @@ export default function Create() {
     try {
       let data = {
         ...formData,
+        uid: user.uid,
       };
 
       if (isEdit) {

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React from "react";
+import React, { useRef } from "react";
 import { useEffect, useState } from "react";
 import { db } from "../firebase/index";
 import {
@@ -11,11 +11,13 @@ import {
   onSnapshot,
   orderBy,
   query,
+  where,
 } from "firebase/firestore";
 import { serverTimestamp } from "firebase/firestore";
 
 export default function useFirestore() {
-  let getCollection = (colName) => {
+  let getCollection = (colName, _q) => {
+    let qRef = useRef(_q).current;
     let [data, setData] = useState([]);
     let [error, setError] = useState("");
     let [loading, setLoading] = useState(false);
@@ -23,7 +25,12 @@ export default function useFirestore() {
     useEffect(() => {
       setLoading(true);
       let ref = collection(db, colName);
-      let q = query(ref, orderBy("date", "desc"));
+      let queries = [];
+      if (qRef) {
+        queries.push(where(...qRef));
+      }
+      queries.push(orderBy("date", "desc"));
+      let q = query(ref, ...queries);
 
       const unsubscribe = onSnapshot(
         q,
@@ -45,10 +52,11 @@ export default function useFirestore() {
         (err) => {
           setError(err.message);
           setLoading(false);
+          console.log("Error fetching collection: ", err);
         }
       );
       return () => unsubscribe();
-    }, []);
+    }, [colName, qRef]);
 
     return { data, error, loading };
   };
@@ -84,7 +92,7 @@ export default function useFirestore() {
   };
 
   let addDocument = async (colName, data) => {
-    data.dat = serverTimestamp();
+    data.date = serverTimestamp();
     let ref = collection(db, colName);
     await addDoc(ref, data);
   };

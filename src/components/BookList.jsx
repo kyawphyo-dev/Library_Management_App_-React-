@@ -2,25 +2,24 @@
 import React, { useEffect, useState } from "react";
 import Book from "./Book";
 import { useLocation } from "react-router-dom";
-import { db } from "../firebase/index";
-import {
-  collection,
-  doc,
-  deleteDoc,
-  onSnapshot,
-  orderBy,
-  query,
-} from "firebase/firestore";
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
+
 import useFirestore from "../hooks/useFirestore";
 
 export default function BookList() {
   let location = useLocation();
   let param = new URLSearchParams(location.search);
   let search = param.get("search");
+  let { user } = useContext(AuthContext);
 
   // Fetch books from Firestore
   let { getCollection, deleteDocument } = useFirestore();
-  let { data: books, loading, error } = getCollection("books");
+  let {
+    data: books,
+    loading,
+    error,
+  } = getCollection("books", ["uid", "==", user.uid]);
   if (error) {
     return <div className="text-red-500">Error: {error}</div>;
   }
