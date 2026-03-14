@@ -3,8 +3,13 @@ import CleanCode from "../assets/bookcovers/Clean_code.jpeg";
 import { Link } from "react-router";
 import trash from "../assets/Icons/trash.svg";
 import edit from "../assets/Icons/edit.svg";
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function Book({ book, deleteBook }) {
+  let { user } = useContext(AuthContext);
+  let mybook = user?.uid === book?.uid;
+
   return (
     <div>
       {/* Books */}
@@ -39,33 +44,35 @@ export default function Book({ book, deleteBook }) {
               ))}
             </div>
             {/* Action Button Section */}
-            <div className="mt-auto flex items-center justify-between">
-              {/* Detail button */}
-              <Link
-                to={`/books/${book.id}`}
-                className="mt-2 bg-primary text-white px-4 py-2 rounded hover:bg-primary-hover transition inline-block text-sm"
-              >
-                <span className="lg:hidden">Details</span>
-                <span className="hidden lg:inline">View Details</span>
-              </Link>
+            {mybook && (
+              <div className="mt-auto flex items-center justify-between">
+                {/* Detail button */}
+                <Link
+                  to={`/books/${book.id}`}
+                  className="mt-2 bg-primary text-white px-4 py-2 rounded hover:bg-primary-hover transition inline-block text-sm"
+                >
+                  <span className="lg:hidden">Details</span>
+                  <span className="hidden lg:inline">View Details</span>
+                </Link>
 
-              {/* Edit */}
-              <Link to={`/edit/${book.id}`} className="mt-2">
+                {/* Edit */}
+                <Link to={`/edit/${book.id}`} className="mt-2">
+                  <img
+                    src={edit}
+                    alt=""
+                    className="border border-primary text-white px-4 py-2 rounded hover:bg-blue-200 transition inline-block text-sm"
+                  />
+                </Link>
+
+                {/* Delete */}
                 <img
-                  src={edit}
+                  className="mt-2 border cursor-pointer border-red-200 text-white px-4 py-2 rounded hover:bg-red-400 hover:text-white transition inline-block text-sm"
+                  src={trash}
                   alt=""
-                  className="border border-primary text-white px-4 py-2 rounded hover:bg-blue-200 transition inline-block text-sm"
+                  onClick={() => deleteBook(book.id)}
                 />
-              </Link>
-
-              {/* Delete */}
-              <img
-                className="mt-2 border cursor-pointer border-red-200 text-white px-4 py-2 rounded hover:bg-red-400 hover:text-white transition inline-block text-sm"
-                src={trash}
-                alt=""
-                onClick={() => deleteBook(book.id)}
-              />
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

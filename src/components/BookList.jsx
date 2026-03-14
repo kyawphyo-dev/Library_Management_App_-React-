@@ -15,11 +15,8 @@ export default function BookList() {
 
   // Fetch books from Firestore
   let { getCollection, deleteDocument } = useFirestore();
-  let {
-    data: books,
-    loading,
-    error,
-  } = getCollection("books", ["uid", "==", user.uid]);
+  let { data: books, loading, error } = getCollection("books");
+  // , ["uid", "==", user.uid]
   if (error) {
     return <div className="text-red-500">Error: {error}</div>;
   }

@@ -27,7 +27,11 @@ export default function useFirestore() {
       let ref = collection(db, colName);
       let queries = [];
       if (qRef) {
-        queries.push(where(...qRef));
+        qRef.forEach((condition) => {
+          if (condition[2] !== undefined) {
+            queries.push(where(...condition));
+          }
+        });
       }
       queries.push(orderBy("date", "desc"));
       let q = query(ref, ...queries);
@@ -93,6 +97,8 @@ export default function useFirestore() {
 
   let addDocument = async (colName, data) => {
     data.date = serverTimestamp();
+    data.updated_at = serverTimestamp();
+
     let ref = collection(db, colName);
     await addDoc(ref, data);
   };
@@ -106,7 +112,7 @@ export default function useFirestore() {
   };
 
   let updateDocument = async (colName, id, data) => {
-    data.date = serverTimestamp();
+    data.updated_at = serverTimestamp();
     let ref = doc(db, colName, id);
     await updateDoc(ref, data);
   };
