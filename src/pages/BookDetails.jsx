@@ -4,35 +4,13 @@ import { Link } from "react-router";
 import CV from "../assets/bookcovers/cover_1.jpg";
 import useFirestore from "../hooks/useFirestore";
 import NoteForm from "../components/NoteForm";
-import { useContext } from "react";
-import { AuthContext } from "../contexts/AuthContext";
-import moment from "moment";
-import trash from "../assets/Icons/trash.svg";
-import edit from "../assets/Icons/edit.svg";
-export default function BookDetails() {
-  let { user } = useContext(AuthContext);
-  let [editNote, setEditNote] = useState(null);
-  let { id } = useParams();
-  let { getDocument, getCollection, deleteDocument } = useFirestore();
-  let { data: book, loading, error } = getDocument("books", id);
-  // Fetch notes related to the book
-  let { data: notes } = getCollection(
-    "notes",
-    user?.uid
-      ? [
-          ["bookId", "==", id],
-          ["uid", "==", user.uid],
-        ]
-      : [["bookId", "==", id]]
-  );
-  if (error) {
-    return <div className="text-red-500">Error: {error}</div>;
-  }
+import NoteList from "../components/NoteList";
 
-  //delet note
-  let deleteNote = async (id) => {
-    await deleteDocument("notes", id);
-  };
+export default function BookDetails() {
+  let { id } = useParams();
+  let { getDocument } = useFirestore();
+  let { data: book, loading, error } = getDocument("books", id);
+
   return (
     <>
       {loading && <div className="text-blue-500">Loading...</div>}
@@ -93,59 +71,7 @@ export default function BookDetails() {
           <NoteForm />
           <div>
             <h3 className="text-text text-center my-3">MY NOTES</h3>
-            <div className="max-w-3xl mx-auto mt-5 space-y-3">
-              {notes?.length ? (
-                notes.map((note) => (
-                  <div
-                    key={note.id}
-                    className="border border-border p-3 rounded shadow bg-card"
-                  >
-                    <div className="flex items-center space-x-3">
-                      <img
-                        src="https://lh3.googleusercontent.com/a/ACg8ocKhLm_BGPuQWHk9yTA_LlJ71ULC2sYNqKJGKrjg0BrywXUmlVE=s96-c"
-                        alt=""
-                        className="w-12 h-12 rounded-full border border-primary"
-                      />
-                      <div>
-                        <p className="text-text text-sm">Kyaw Phyo Win</p>
-                        <p className=" text-text-muted text-sm">
-                          {moment(note.date?.toDate()).fromNow()}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center mt-3 ">
-                      <div>
-                        {editNote?.id !== note.id && (
-                          <p className=" text-text">{note.note}</p>
-                        )}
-                      </div>
-
-                      <div className="flex space-x-2">
-                        <img
-                          src={edit}
-                          className="cursor-pointer"
-                          onClick={() => setEditNote(note)}
-                        />
-                        <img
-                          src={trash}
-                          className="cursor-pointer"
-                          onClick={() => deleteNote(note.id)}
-                        />
-                      </div>
-                    </div>
-                    {editNote?.id === note.id && (
-                      <NoteForm
-                        type="update"
-                        setEditNote={setEditNote}
-                        editNote={editNote}
-                      />
-                    )}
-                  </div>
-                ))
-              ) : (
-                <p className="text-center text-gray-500">No notes found.</p>
-              )}
-            </div>
+            <NoteList />
           </div>
         </>
       )}
