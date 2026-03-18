@@ -16,7 +16,8 @@ import {
 import { serverTimestamp } from "firebase/firestore";
 
 export default function useFirestore() {
-  let getCollection = (colName, _q) => {
+  let getCollection = (colName, _q, search) => {
+    // console.log(search);
     let qRef = useRef(_q).current;
     let [data, setData] = useState([]);
     let [error, setError] = useState("");
@@ -47,10 +48,18 @@ export default function useFirestore() {
               id: doc.id,
               ...doc.data(),
             }));
-
+            if (search) {
+              collectionData = collectionData.filter(
+                (item) =>
+                  item.title.toLowerCase().includes(search.toLowerCase()) ||
+                  item.author.toLowerCase().includes(search.toLowerCase()) ||
+                  item.description.toLowerCase().includes(search.toLowerCase())
+              );
+            }
             setData(collectionData);
             setError("");
           }
+
           setLoading(false);
         },
         (err) => {
@@ -59,8 +68,9 @@ export default function useFirestore() {
           console.log("Error fetching collection: ", err);
         }
       );
+
       return () => unsubscribe();
-    }, [colName, qRef]);
+    }, [colName, qRef, search]);
 
     return { data, error, loading };
   };

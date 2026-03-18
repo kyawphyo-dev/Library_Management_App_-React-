@@ -32,6 +32,7 @@ export default function NoteForm({ type = "create", setEditNote, editNote }) {
       await addDocument("notes", data);
       setNote("");
     } else {
+      // eslint-disable-next-line react-hooks/immutability
       editNote.note = note;
       await updateDocument("notes", editNote.id, editNote);
       setEditNote(null);

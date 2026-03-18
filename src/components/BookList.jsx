@@ -12,10 +12,20 @@ export default function BookList() {
   let param = new URLSearchParams(location.search);
   let search = param.get("search");
   let { user } = useContext(AuthContext);
+  let [ownBook, setOwnBook] = useState(false);
 
   // Fetch books from Firestore
   let { getCollection, deleteDocument } = useFirestore();
-  let { data: books, loading, error } = getCollection("books");
+  let {
+    data: books,
+    loading,
+    error,
+  } = getCollection(
+    "books",
+    ownBook ? [["uid", "==", user.uid]] : null,
+    search
+  );
+
   // , ["uid", "==", user.uid]
   if (error) {
     return <div className="text-red-500">Error: {error}</div>;

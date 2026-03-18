@@ -7,9 +7,11 @@ import useSignOut from "../hooks/useSignOut";
 import { AuthContext } from "../contexts/AuthContext";
 
 export default function Navbar() {
+  let param = new URLSearchParams(location.search);
+  let searchValue = param.get("search");
   let { user } = useContext(AuthContext);
   let { changeTheme, isDark } = useTheme();
-  let [search, setSearch] = useState("");
+  let [search, setSearch] = useState(searchValue || "");
   let navigate = useNavigate();
   let handleSearch = () => {
     navigate(`/?search=${search}`);
@@ -121,7 +123,7 @@ export default function Navbar() {
             {/* profile */}
             <div className="w-10 h-10">
               <img
-                src="https://lh3.googleusercontent.com/a/ACg8ocKhLm_BGPuQWHk9yTA_LlJ71ULC2sYNqKJGKrjg0BrywXUmlVE=s96-c"
+                src="https://accounts.google.com/SignOutOptions?hl=en&continue=https://www.google.com%3Fhl%3Den-US&ec=GBRA8wE"
                 alt=""
                 className="w-full rounded-full border border-primary"
               />

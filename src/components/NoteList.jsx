@@ -14,11 +14,7 @@ export default function NoteList() {
 
   let { getCollection, deleteDocument } = useFirestore();
   // Fetch notes related to the book
-  let {
-    data: notes,
-    error,
-    loading,
-  } = getCollection(
+  let { data: notes, error } = getCollection(
     "notes",
     user?.uid
       ? [

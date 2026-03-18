@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router";
 import CV from "../assets/bookcovers/cover_1.jpg";
@@ -9,7 +9,7 @@ import NoteList from "../components/NoteList";
 export default function BookDetails() {
   let { id } = useParams();
   let { getDocument } = useFirestore();
-  let { data: book, loading, error } = getDocument("books", id);
+  let { data: book, loading } = getDocument("books", id);
 
   return (
     <>
