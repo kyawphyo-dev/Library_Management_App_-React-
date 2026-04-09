@@ -138,6 +138,7 @@ export default function Navbar() {
                   onClick={() => changeTheme("dark")}
                 />
               )}
+
               {isDark && (
                 <img
                   src={lightIcon}
